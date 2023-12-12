@@ -191,12 +191,14 @@ app.add_middleware(
 
 class ModelInput(BaseModel):
     news_heading: str
-    
+
 # Load the saved model
-fakenews_model = pickle.load(open('FakeNews_model1.sav', 'rb'))
+fakenews_model = pickle.load(open('FakeNews_model.sav', 'rb'))
+# fakenews_model = pickle.load(open(r'C:\Users\abdul\Desktop\ML model an API\FakeNews_model1.sav', 'rb'))
 
 # Load the TF-IDF vectorizer
 vectorizer = pickle.load(open('TfidfVectorizer_model.sav', 'rb'))
+# vectorizer = pickle.load(open(r'C:\Users\abdul\Desktop\ML model an API\TfidfVectorizer_model.sav', 'rb'))
 
 port_stem = PorterStemmer()
 
@@ -208,7 +210,7 @@ def preprocess_text(content):
     stemmed_content = [port_stem.stem(word) for word in stemmed_content if not word in stopwords.words('english')]
     stemmed_content = ' '.join(stemmed_content)
     return stemmed_content
-
+   
 @app.post('/FakeNews_prediction')
 def fake_news_prediction(input_parameters: ModelInput):
     # Preprocess the input text
@@ -222,6 +224,6 @@ def fake_news_prediction(input_parameters: ModelInput):
 
     # Return the prediction result
     if prediction[0] == 0:
-        return 'The news is Fake'
-    else:
         return 'The news is Real'
+    else:
+        return 'The news is Fake'
